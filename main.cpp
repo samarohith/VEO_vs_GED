@@ -192,6 +192,8 @@ void clean() {
 	delete[] git;
 }
 
+
+
 int main(int argc, char** argv) 
 {
 	if (argc == 1) usage();
@@ -203,15 +205,16 @@ int main(int argc, char** argv)
 	char* pchar;
 	bool file_set = false, q_set = false, tau_set = false;
 	char dfile[256] = "gdb", qfile[256], comb;
-
+	string filename = "all_graph_file.txt";
+	/*
 	ifstream fin("all_graph_file.txt", ifstream::in);
 	if(!fin.is_open())
     {
         cout<<"Error opening file"<<endl;
         return 0;
     }
-    /*
-    unordered_set<pair<int,int>> uset;
+    
+    unordered_set<pair<int,int>, hashFunction> uset;
     string line;
     while(fin)
     {
@@ -226,8 +229,9 @@ int main(int argc, char** argv)
         }
         uset.insert( { stoi(tokens[0]), stoi(tokens[1]) } );
         
-    }*/
+    }
     fin.close();
+    */
 
 
 	for (int ix = 1; ix < argc; ++ ix) {
@@ -360,7 +364,7 @@ int main(int argc, char** argv)
 			init_mem();
 			cout << "\n         Num = " << gdb_size << " Q = " << under_qs << " TAU = " << tau << " DB = " << dfile << endl;
 			if (min_edit_filter) {
-				run_min_prefix(); 
+				run_min_prefix(filename); 
 			} else {
 				run_cnt_prefix();
 			}

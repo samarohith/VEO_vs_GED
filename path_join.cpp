@@ -1,9 +1,18 @@
 #include <assert.h>
+#include <bits/stdc++.h>
 #include "path_join.h"
 #include "path_search.h"
 #include "set_cover.h"
 #include "filter.h"
 
+struct hashFunction
+{
+  size_t operator()(const pair<int , 
+                    int> &x) const
+  {
+    return x.first ^ x.second;
+  }
+};
 
 void vectorize_label( void )
 {
@@ -768,7 +777,7 @@ void imp_order_join( void )
 	delete[] tested; delete[] backup;
 }
 
-void run_min_prefix( void )
+void run_min_prefix(string filename)
 {
 #ifdef UNIX
 	timeval begin;
