@@ -202,6 +202,7 @@ int main(int argc, char** argv)
 	char* pchar;
 	bool file_set = false, q_set = false, tau_set = false;
 	char dfile[256] = "gdb", qfile[256], comb;
+	ifstream fin("all_graph_file.txt");
 
 	for (int ix = 1; ix < argc; ++ ix) {
 		pchar = argv[ix];
