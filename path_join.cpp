@@ -5,14 +5,9 @@
 #include "set_cover.h"
 #include "filter.h"
 
-struct hashFunction
-{
-  size_t operator()(const pair<int , 
-                    int> &x) const
-  {
-    return x.first ^ x.second;
-  }
-};
+
+
+unordered_set<pair<int,int>, hashFunction> uset;
 
 void vectorize_label( void )
 {
@@ -526,7 +521,7 @@ void opt_order_join(string filename)
         cout<<"Error opening file"<<endl;
         return;
     }
-    unordered_set<pair<int,int>, hashFunction> uset;
+    
     string line;
     while(fin)
     {
@@ -550,7 +545,7 @@ void opt_order_join(string filename)
 	double begin = (double)clock();		
 #endif
 	/* indexed graphs */
-	cout<<"gdb size  is "<<gdb.size()<<endl;
+	cout<<"gdb size is "<<gdb.size()<<endl;
 	for (unsigned i = 0, j = gdb_size - 1; i != j;) {
 		switch (status[i])
 		{
@@ -575,7 +570,7 @@ void opt_order_join(string filename)
 							pri = content_filtering(*ip, i);
 							if (pri != NULL) {
 								++ dist_cand;
-								compute_rud_dist(pri, ans, filter_only);
+								rud_dist(pri, ans, filter_only);
 							}
 							delete pri;
 						}
@@ -604,7 +599,7 @@ void opt_order_join(string filename)
 								pri = content_filtering(*ip, i);
 								if (pri != NULL) {
 									++ dist_cand;
-									compute_rud_dist(pri, ans, filter_only);
+									rud_dist(pri, ans, filter_only);
 								}
 								delete pri;
 							}
@@ -642,13 +637,13 @@ void opt_order_join(string filename)
 					if (gdb[uid[j]].path_num == 0 && gdb[uid[i]].path_num == 0) {
 						++ dist_cand;
 						pri = new Priority(uid[i], uid[j]);	
-						compute_rud_dist(pri, ans, filter_only);
+						rud_dist(pri, ans, filter_only);
 						delete pri;
 					} else {
 						pri = content_filtering(uid[j], uid[i]);
 						if (pri != NULL) {
 							++ dist_cand;
-							compute_rud_dist(pri, ans, filter_only);
+							rud_dist(pri, ans, filter_only);
 						}
 						delete pri;
 					}

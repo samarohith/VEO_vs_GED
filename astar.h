@@ -1,14 +1,26 @@
 #pragma once
 
+#include <bits/stdc++.h>
 #include "minheap.h"
 #include "graph.h"
 #include "stopwatch.h"
 #include <fstream>
 
+
+struct hashFunction
+{
+  size_t operator()(const pair<int , 
+                    int> &x) const
+  {
+    return x.first ^ x.second;
+  }
+};
+
 extern vector<Graph> gdb;
 extern bool print_ans, print_more;
 extern Stopwatch v_time;
 extern int nodes_expanded, nodes_popped;
+extern unordered_set<pair<int,int>, hashFunction> uset;
 
 
 class vertex_label_pair
@@ -183,6 +195,30 @@ inline void compute_rud_dist( Priority* pri, int& ans, bool filter_only = false 
 	}
 	pri->roll_back();
 	v_time.pause();
+}
+
+
+inline void rud_dist( Priority* pri, int& ans, bool filter_only = false) {
+	if (filter_only) return;
+	v_time.resume();
+	pri->init_astar();
+	auto x = pri->lg->name, y = pri->rg->name;
+	if(uset.count({x,y}))
+	{
+		int edist = rudim_edit_distance(pri);
+		ofstream outfile("aids_result.txt", ios::app);
+		if (print_more)
+			cout << pri->lgid << "(" << pri->lg->name << ") - " << pri->rgid << "(" << pri->rg->name << ") " << edist << " #" << nodes_expanded << endl;
+			//outfile << pri->lgid << "(" << pri->lg->name << ") - " << pri->rgid << "(" << pri->rg->name << ") " << edist << " #" << nodes_expanded << endl;
+		if (edist != OVER_BOUND) {
+			++ ans;
+			if (!print_more & print_ans)
+				cout << pri->lgid << "(" << pri->lg->name << ") - " << pri->rgid << "(" << pri->rg->name << ") " << edist << " #" << nodes_expanded << endl;
+				outfile << pri->lg->name << " " << pri->rg->name << " " << edist << endl;
+		}
+		pri->roll_back();
+		v_time.pause();
+	}
 }
 
 inline void compute_opt_dist( Priority* pri, int& ans, bool filter_only = false ) {
