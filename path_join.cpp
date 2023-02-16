@@ -513,12 +513,36 @@ void rud_order_join( void )
 	delete[] tested; delete[] backup;
 }
 
-void opt_order_join( void )
+void opt_order_join(string filename)
 {
 	unsigned* tested = new unsigned[gdb_size], test_cnt = -1, free_end = 0;
 	int* backup = new int[gdb_size], ans = 0, dist_cand = 0, cand = 0;
 	set<unsigned>::const_iterator ip;
 	Priority *pri;
+
+	ifstream fin(filename, ifstream::in);
+	if(!fin.is_open())
+    {
+        cout<<"Error opening file"<<endl;
+        return;
+    }
+    unordered_set<pair<int,int>, hashFunction> uset;
+    string line;
+    while(fin)
+    {
+        getline(fin, line);
+        if(line == "") break;
+        vector <string> tokens;
+        stringstream ss(line);
+        string temp;
+        while(getline(ss, temp, ' '))
+        {
+            tokens.push_back(temp);
+        }
+        uset.insert( { stoi(tokens[0]), stoi(tokens[1]) } );
+        
+    }
+    fin.close();
 
 #ifdef UNIX
 	timeval begin;
@@ -823,7 +847,7 @@ void run_min_prefix(string filename)
 		switch (vf_order)
 		{
 		case '0': rud_order_join();	break;
-		case '1': opt_order_join(); break;
+		case '1': opt_order_join(filename); break;
 		//case '2': imp_order_join(); // not always recommended, need to tune to perform well
 		}
 	}
