@@ -1,6 +1,7 @@
 #include "common.h"
 #include "path_join.h"
 #include "path_search.h"
+#include <bits/stdc++.h>
 
 // setting variables
 char vf_order = '1', version = '0';
@@ -202,7 +203,32 @@ int main(int argc, char** argv)
 	char* pchar;
 	bool file_set = false, q_set = false, tau_set = false;
 	char dfile[256] = "gdb", qfile[256], comb;
-	ifstream fin("all_graph_file.txt");
+
+	ifstream fin("all_graph_file.txt", ifstream::in);
+	if(!fin.is_open())
+    {
+        cout<<"Error opening file"<<endl;
+        return 0;
+    }
+    /*
+    unordered_set<pair<int,int>> uset;
+    string line;
+    while(fin)
+    {
+        getline(fin, line);
+        if(line == "") break;
+        vector <string> tokens;
+        stringstream ss(line);
+        string temp;
+        while(getline(ss, temp, ' '))
+        {
+            tokens.push_back(temp);
+        }
+        uset.insert( { stoi(tokens[0]), stoi(tokens[1]) } );
+        
+    }*/
+    fin.close();
+
 
 	for (int ix = 1; ix < argc; ++ ix) {
 		pchar = argv[ix];
