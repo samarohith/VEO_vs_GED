@@ -13,9 +13,9 @@ unsigned cnt_plength(const unsigned g);
 unsigned min_plength(const unsigned g);
 void cnt_filter_join(void);
 void rud_order_join(void);
-void opt_order_join(void);
+void opt_order_join(string filename);
 void imp_order_join(void);
-void run_min_prefix(void);
+void run_min_prefix(string filename);
 void run_cnt_prefix(void);
 unsigned componentize(const unsigned g, unsigned* nomat, unsigned cnt, vector<vector<unsigned> >* component, unsigned**& npid, unsigned*& nsize);
 

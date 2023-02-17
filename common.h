@@ -48,7 +48,7 @@ using namespace std;
 #define gmap map<const unsigned, set<unsigned> >
 #define iter_graph map<const unsigned, set<unsigned> >::iterator 
 #define const_iter_graph map<const unsigned, set<unsigned> >::const_iterator
-#define INFINITY OVER_BOUND
+//#define INFINITY OVER_BOUND
 #endif
 
 #define UNMAPPED OVER_BOUND

@@ -1,9 +1,13 @@
 #include <assert.h>
+#include <bits/stdc++.h>
 #include "path_join.h"
 #include "path_search.h"
 #include "set_cover.h"
 #include "filter.h"
 
+
+
+unordered_set<pair<int,int>, hashFunction> uset;
 
 void vectorize_label( void )
 {
@@ -504,12 +508,36 @@ void rud_order_join( void )
 	delete[] tested; delete[] backup;
 }
 
-void opt_order_join( void )
+void opt_order_join(string filename)
 {
 	unsigned* tested = new unsigned[gdb_size], test_cnt = -1, free_end = 0;
 	int* backup = new int[gdb_size], ans = 0, dist_cand = 0, cand = 0;
 	set<unsigned>::const_iterator ip;
 	Priority *pri;
+
+	ifstream fin(filename, ifstream::in);
+	if(!fin.is_open())
+    {
+        cout<<"Error opening file"<<endl;
+        return;
+    }
+    
+    string line;
+    while(fin)
+    {
+        getline(fin, line);
+        if(line == "") break;
+        vector <string> tokens;
+        stringstream ss(line);
+        string temp;
+        while(getline(ss, temp, ' '))
+        {
+            tokens.push_back(temp);
+        }
+        uset.insert( { stoi(tokens[0]), stoi(tokens[1]) } );
+        //cout<<stoi(tokens[0])<<" "<< stoi(tokens[1])<<endl;
+    }
+    fin.close();
 
 #ifdef UNIX
 	timeval begin;
@@ -518,7 +546,7 @@ void opt_order_join( void )
 	double begin = (double)clock();		
 #endif
 	/* indexed graphs */
-	cout<<"gdb size  is "<<gdb.size()<<endl;
+	cout<<"gdb size is "<<gdb.size()<<endl;
 	for (unsigned i = 0, j = gdb_size - 1; i != j;) {
 		switch (status[i])
 		{
@@ -543,7 +571,7 @@ void opt_order_join( void )
 							pri = content_filtering(*ip, i);
 							if (pri != NULL) {
 								++ dist_cand;
-								compute_rud_dist(pri, ans, filter_only);
+								rud_dist(pri, ans, filter_only);
 							}
 							delete pri;
 						}
@@ -572,7 +600,7 @@ void opt_order_join( void )
 								pri = content_filtering(*ip, i);
 								if (pri != NULL) {
 									++ dist_cand;
-									compute_rud_dist(pri, ans, filter_only);
+									rud_dist(pri, ans, filter_only);
 								}
 								delete pri;
 							}
@@ -610,13 +638,13 @@ void opt_order_join( void )
 					if (gdb[uid[j]].path_num == 0 && gdb[uid[i]].path_num == 0) {
 						++ dist_cand;
 						pri = new Priority(uid[i], uid[j]);	
-						compute_rud_dist(pri, ans, filter_only);
+						rud_dist(pri, ans, filter_only);
 						delete pri;
 					} else {
 						pri = content_filtering(uid[j], uid[i]);
 						if (pri != NULL) {
 							++ dist_cand;
-							compute_rud_dist(pri, ans, filter_only);
+							rud_dist(pri, ans, filter_only);
 						}
 						delete pri;
 					}
@@ -768,7 +796,7 @@ void imp_order_join( void )
 	delete[] tested; delete[] backup;
 }
 
-void run_min_prefix( void )
+void run_min_prefix(string filename)
 {
 #ifdef UNIX
 	timeval begin;
@@ -814,7 +842,7 @@ void run_min_prefix( void )
 		switch (vf_order)
 		{
 		case '0': rud_order_join();	break;
-		case '1': opt_order_join(); break;
+		case '1': opt_order_join(filename); break;
 		//case '2': imp_order_join(); // not always recommended, need to tune to perform well
 		}
 	}
