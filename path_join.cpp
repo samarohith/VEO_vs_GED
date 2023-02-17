@@ -535,6 +535,7 @@ void opt_order_join(string filename)
             tokens.push_back(temp);
         }
         uset.insert( { stoi(tokens[0]), stoi(tokens[1]) } );
+        //cout<<stoi(tokens[0])<<" "<< stoi(tokens[1])<<endl;
     }
     fin.close();
 

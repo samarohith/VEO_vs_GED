@@ -202,9 +202,12 @@ inline void rud_dist( Priority* pri, int& ans, bool filter_only = false) {
 	if (filter_only) return;
 	v_time.resume();
 	pri->init_astar();
-	auto x = pri->lg->name, y = pri->rg->name;
-	if(uset.count({x,y}))
+	auto x = int(pri->lg->name), y = int(pri->rg->name);
+	//cout<<x<<" "<<y<<endl;
+	if(uset.count({x,y}) || uset.count({y,x}))
 	{
+		cout<<x<<" "<<y<<endl;
+		cout<<"hello"<<endl;
 		int edist = rudim_edit_distance(pri);
 		ofstream outfile("aids_result.txt", ios::app);
 		if (print_more)
